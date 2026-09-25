@@ -74,7 +74,7 @@ h2{font-size:1rem;margin:22px 0 8px}
     <label for="urls">অথবা ছবির ডাইরেক্ট লিংক দিন (প্রতি লাইনে একটা)</label>
     <textarea id="urls" rows="3" placeholder="https://example.com/photo.jpg" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:.85rem ui-monospace,monospace"></textarea>
     <div class="row"><button id="urlgo" class="p">লিংক থেকে কনভার্ট করুন</button></div>
-    <p class="note" style="margin:6px 0 0">কোনো সাইট সরাসরি ছবি নিতে না দিলে টুল নিজে থেকে ফ্রি ইমেজ প্রক্সি wsrv.nl দিয়ে ছবিটি আনার চেষ্টা করে (তখন ছবির লিংকটি ওই সার্ভিসের কাছে যায়)। তাতেও না হলে ছবিটি ডাউনলোড করে উপরে ফাইল হিসেবে দিন।</p>
+    <p class="note" style="margin:6px 0 0">কোনো সাইট সরাসরি ছবি নিতে না দিলে টুল নিজে থেকে ফ্রি প্রক্সি (wsrv.nl, তারপর allorigins.win) দিয়ে ছবিটি আনার চেষ্টা করে (তখন ছবির লিংকটি ওই সার্ভিসের কাছে যায়)। তাতেও না হলে ছবিটি ডাউনলোড করে উপরে ফাইল হিসেবে দিন।</p>
   </div>
 
   <h2 id="rh" style="display:none">ফলাফল</h2>
@@ -194,19 +194,23 @@ $('urlgo').onclick=async()=>{
   const btn=$('urlgo');btn.disabled=true;
   for(const u of list){
     try{
-      let b;
-      try{
-        const r=await fetch(u);
-        if(!r.ok)throw new Error('HTTP '+r.status);
-        b=await r.blob();
-      }catch(e1){
-        // সরাসরি না পেলে ফ্রি ইমেজ প্রক্সি (wsrv.nl) দিয়ে চেষ্টা
+      let b;const errs=[];
+      const tries=[
+        ['সরাসরি',u],
+        ['প্রক্সি১','https://wsrv.nl/?url='+encodeURIComponent(u)],
+        ['প্রক্সি২','https://api.allorigins.win/raw?url='+encodeURIComponent(u)]
+      ];
+      for(const [lbl,url] of tries){
         try{
-          const r2=await fetch('https://wsrv.nl/?url='+encodeURIComponent(u));
-          if(!r2.ok)throw new Error('HTTP '+r2.status);
-          b=await r2.blob();
-        }catch(e2){throw new Error('সরাসরি: '+(e1.message||e1)+' | প্রক্সি: '+(e2.message||e2))}
+          const r=await fetch(url);
+          if(!r.ok)throw new Error('HTTP '+r.status);
+          const bl=await r.blob();
+          if(!bl.size)throw new Error('খালি উত্তর');
+          if(bl.type&&!bl.type.startsWith('image/')&&!/octet-stream/.test(bl.type))throw new Error('ছবি নয় ('+bl.type+')');
+          b=bl;break;
+        }catch(e){errs.push(lbl+': '+(e.message||e))}
       }
+      if(!b)throw new Error(errs.join(' | '));
       let n='image';try{n=decodeURIComponent(new URL(u).pathname.split('/').pop())||'image'}catch(_){}
       const m=n.match(/\.([a-z0-9]+)$/i),ext=m?m[1].toLowerCase():'';
       if(!ext)n+='.jpg';
