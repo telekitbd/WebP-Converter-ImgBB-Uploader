@@ -3,49 +3,66 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WebP কনভার্টার + ImgBB আপলোডার</title>
+<title>ছবি আপলোডার + ImgBB</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--tx:#161a20;--mu:#68707d;--bd:#dfe3e8;--ac:#1a73e8;--ok:#1a8f4c;--er:#d93025}
-@media (prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1e2126;--tx:#eceff3;--mu:#98a1ae;--bd:#333944;--ac:#6ea8fe;--ok:#4cc38a;--er:#ff7b72}}
+:root{--bg:#eef1f8;--card:#ffffff;--tx:#141a2b;--mu:#667085;--bd:#e3e7f1;--ac:#5b5bf0;--ac2:#8b5cf6;--ok:#12a150;--er:#e5383b;--sh:0 8px 28px rgba(45,55,110,.09)}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0d15;--card:#151827;--tx:#eef0f8;--mu:#9aa3b8;--bd:#272c42;--ac:#7c83ff;--ac2:#a78bfa;--ok:#3ddc97;--er:#ff6b6b;--sh:0 8px 28px rgba(0,0,0,.35)}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Bengali","Segoe UI",sans-serif;line-height:1.5}
-main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
-h1{font-size:1.35rem;margin:0 0 4px}
-p.sub{color:var(--mu);margin:0 0 16px;font-size:.92rem}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
-label{display:block;font-size:.82rem;color:var(--mu);margin-bottom:4px}
-input[type=range]{width:100%}
-input[type=password],input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+body{margin:0;color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Bengali","Segoe UI",sans-serif;line-height:1.55;
+background:radial-gradient(900px 420px at 10% -10%,color-mix(in srgb,var(--ac) 20%,transparent),transparent),radial-gradient(800px 400px at 100% 0%,color-mix(in srgb,var(--ac2) 18%,transparent),transparent),var(--bg);background-attachment:fixed}
+main{max-width:780px;margin:0 auto;padding:18px 14px 48px}
+.hero{display:flex;gap:14px;align-items:center;padding:20px;border-radius:22px;margin-bottom:16px;color:#fff;
+background:linear-gradient(135deg,var(--ac),var(--ac2));box-shadow:0 14px 34px color-mix(in srgb,var(--ac) 40%,transparent)}
+.logo{width:54px;height:54px;flex:none;border-radius:16px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:1.7rem;backdrop-filter:blur(6px)}
+h1{font-size:1.3rem;margin:0 0 4px;line-height:1.3}
+h1 span{font-weight:500;opacity:.85;font-size:.95rem;display:block}
+p.sub{color:rgba(255,255,255,.9);margin:0;font-size:.88rem}
+p.sub b{color:#fff;background:rgba(255,255,255,.2);padding:1px 7px;border-radius:999px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+.ct{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;margin:0 0 12px}
+.ct i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;color:#fff;flex:none;background:linear-gradient(135deg,var(--ac),var(--ac2))}
+label{display:block;font-size:.82rem;color:var(--mu);margin-bottom:5px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+input[type=checkbox]{accent-color:var(--ac);width:16px;height:16px}
+input[type=password],input[type=text],select,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 22%,transparent)}
 .chk{display:flex;gap:8px;align-items:center;font-size:.9rem;color:var(--tx);margin:10px 0 0}
-#drop{border:2px dashed var(--bd);border-radius:12px;padding:32px 12px;text-align:center;cursor:pointer;color:var(--mu);background:var(--card)}
-#drop.on{border-color:var(--ac);color:var(--ac)}
-#drop b{color:var(--tx);display:block;font-size:1.05rem;margin-bottom:4px}
-.item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--bd)}
+#drop{border:2px dashed color-mix(in srgb,var(--ac) 50%,var(--bd));border-radius:20px;padding:36px 14px;text-align:center;cursor:pointer;color:var(--mu);
+background:linear-gradient(180deg,color-mix(in srgb,var(--ac) 7%,var(--card)),var(--card));transition:transform .15s,border-color .15s,background .15s;margin-bottom:0}
+#drop::before{content:"⬆";display:grid;place-items:center;width:56px;height:56px;margin:0 auto 10px;border-radius:50%;font-size:1.5rem;color:#fff;background:linear-gradient(135deg,var(--ac),var(--ac2));box-shadow:0 8px 20px color-mix(in srgb,var(--ac) 40%,transparent)}
+#drop:hover{transform:translateY(-2px)}
+#drop.on{border-color:var(--ac);color:var(--ac);transform:scale(1.015)}
+#drop b{color:var(--tx);display:block;font-size:1.08rem;margin-bottom:4px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--bd)}
 .item:first-child{border-top:0}
-.item img{width:96px;height:72px;object-fit:contain;background:var(--bg);border-radius:8px;border:1px solid var(--bd);flex:none}
+.item img{width:96px;height:72px;object-fit:contain;background:var(--bg);border-radius:12px;border:1px solid var(--bd);flex:none}
 .info{min-width:0;flex:1}
 .nm{font-weight:600;font-size:.92rem;overflow-wrap:anywhere}
-.meta{font-size:.8rem;color:var(--mu)}
-.st{font-size:.85rem;margin-top:2px}
+.meta{font-size:.78rem;color:var(--mu)}
+.st{font-size:.85rem;margin-top:3px}
 .st.ok{color:var(--ok)}.st.er{color:var(--er)}
-.row{display:flex;gap:6px;margin-top:6px}
-.row input{flex:1;min-width:0;padding:7px 8px;font:.8rem ui-monospace,monospace}
-button,a.btn{padding:7px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;font-size:.85rem;cursor:pointer;text-decoration:none;white-space:nowrap}
-button.p{background:var(--ac);border-color:var(--ac);color:#fff}
-h2{font-size:1rem;margin:22px 0 8px}
+.row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.row input{flex:1;min-width:150px;padding:8px 10px;font:.8rem ui-monospace,monospace}
+button,a.btn{padding:8px 13px;border-radius:11px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;font-size:.85rem;cursor:pointer;text-decoration:none;white-space:nowrap;transition:transform .12s,box-shadow .12s,border-color .12s}
+button:hover,a.btn:hover{transform:translateY(-1px);border-color:var(--ac);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+button.p{background:linear-gradient(135deg,var(--ac),var(--ac2));border-color:transparent;color:#fff;font-weight:600}
+h2{font-size:1.05rem;margin:22px 0 10px}
 .note{font-size:.8rem;color:var(--mu)}
 .note a{color:var(--ac)}
-#copyall{display:none;margin-bottom:8px}
+#copyall{display:none;margin-bottom:10px}
 #keystat{font-size:.82rem;margin-top:6px}
+@media (max-width:520px){.hero{padding:16px}.logo{width:44px;height:44px}.item img{width:76px;height:58px}}
 </style>
 </head>
 <body>
 <main>
-  <h1>🖼️ WebP কনভার্টার + ImgBB আপলোডার</h1>
-  <p class="sub">যেকোনো সাইজের ছবি দিন — নিজে থেকে <b id="reqtxt"></b> পিক্সেল বানিয়ে WebP করে ImgBB-তে আপলোড হবে এবং পাবলিক ডাইরেক্ট লিংক পাবেন।</p>
+  <header class="hero"><div class="logo">🖼️</div><div><h1>ছবি আপলোডার<span>ImgBB আপলোড + টেলিগ্রাম বট</span></h1>
+  <p class="sub">যে ছবি দেবেন সেটাই হুবহু (সাইজ ও ফরম্যাট না বদলে) ImgBB-তে আপলোড হবে এবং পাবলিক ডাইরেক্ট লিংক পাবেন।</p></div></header>
 
   <div class="card">
-    <label for="key">ImgBB API Key</label>
+    <div class="ct"><i>১</i>ImgBB API Key</div>
+    <label for="key" style="display:none">ImgBB API Key</label>
     <div class="row" style="margin-top:0">
       <input id="key" type="password" placeholder="এখানে API key বসান" autocomplete="off" style="flex:1">
       <button id="save" class="p">সেভ করুন</button>
@@ -56,25 +73,40 @@ h2{font-size:1rem;margin:22px 0 8px}
   </div>
 
   <div class="card">
-    <label for="fit">অন্য সাইজের ছবি হলে কীভাবে মানাবে</label>
-    <select id="fit" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;margin-bottom:12px">
-      <option value="contain" selected>পুরো ছবি রাখো (ফাঁকা জায়গায় সাদা ব্যাকগ্রাউন্ড)</option>
-      <option value="cover">ক্রপ করে পুরো ফ্রেম ভরাট করো</option>
-      <option value="stretch">টেনে ফ্রেমের মাপে বসাও (ছবি বেঁকে যেতে পারে)</option>
+    <div class="ct"><i>২</i>✈️ টেলিগ্রাম বট</div>
+    <label for="tgtok" style="margin-top:8px">Bot Token (@BotFather থেকে পাবেন)</label>
+    <input id="tgtok" type="password" placeholder="123456789:AA..." autocomplete="off">
+    <label for="tgchat" style="margin-top:8px">Chat ID (আপনার বা গ্রুপ/চ্যানেলের আইডি)</label>
+    <input id="tgchat" type="text" placeholder="যেমন 123456789 বা -1001234567890" autocomplete="off">
+    <label for="tgmode" style="margin-top:8px">কীভাবে পাঠাবে</label>
+    <select id="tgmode" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit">
+      <option value="document" selected>ফাইল হিসেবে (কোয়ালিটি অক্ষত থাকবে)</option>
+      <option value="photo">ছবি হিসেবে (টেলিগ্রাম কম্প্রেস করবে)</option>
     </select>
-    <label for="q">কোয়ালিটি: <span id="qv">85</span>%</label>
-    <input id="q" type="range" min="40" max="100" value="85">
-    <label class="chk"><input type="checkbox" id="tgt" checked> ফাইল সাইজ ৩০০–৫০০ KB এর মধ্যে রাখো (অটো কোয়ালিটি)</label>
+    <label class="chk"><input type="checkbox" id="tgauto" checked> আপলোড সম্পন্ন হলে নিজে থেকে টেলিগ্রামে পাঠাও</label>
+    <div class="row" style="margin-top:10px"><button id="tgsave" class="p">সেভ করুন</button><button id="tgtest">টেস্ট মেসেজ</button><button id="tgdel">মুছুন</button></div>
+    <div id="tgstat" class="note" style="margin-top:6px"></div>
+    <p class="note" style="margin:6px 0 0">আগে বটকে একবার /start দিন (গ্রুপ/চ্যানেলে পাঠাতে হলে বটকে অ্যাডমিন করুন)। Token শুধু এই ব্রাউজারে সেভ থাকে, তাই অন্য কারো সাথে এই পেজ শেয়ার করবেন না।</p>
   </div>
 
-  <div id="drop" tabindex="0"><b>ছবি এখানে ড্রপ করুন বা ক্লিক করুন</b>যেকোনো সাইজ চলবে, আউটপুট হবে <span id="reqtxt2"></span> পিক্সেল</div>
+  <div id="drop" tabindex="0"><b>ছবি এখানে ড্রপ করুন বা ক্লিক করুন</b>যেকোনো সাইজ ও ফরম্যাট চলবে, যেমন আছে তেমনই আপলোড হবে</div>
   <input id="file" type="file" accept="image/*" multiple hidden>
 
   <div class="card" style="margin-top:14px">
+    <div class="ct"><i>🔗</i>লিংক থেকে ছবি</div>
     <label for="urls">অথবা ছবির ডাইরেক্ট লিংক দিন (প্রতি লাইনে একটা)</label>
     <textarea id="urls" rows="3" placeholder="https://example.com/photo.jpg" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:.85rem ui-monospace,monospace"></textarea>
     <div class="row"><button id="urlgo" class="p">লিংক থেকে কনভার্ট করুন</button></div>
     <p class="note" style="margin:6px 0 0">কোনো সাইট সরাসরি ছবি নিতে না দিলে টুল নিজে থেকে ফ্রি প্রক্সি (wsrv.nl, তারপর allorigins.win) দিয়ে ছবিটি আনার চেষ্টা করে (তখন ছবির লিংকটি ওই সার্ভিসের কাছে যায়)। তাতেও না হলে ছবিটি ডাউনলোড করে উপরে ফাইল হিসেবে দিন।</p>
+  </div>
+
+  <div class="card">
+    <div class="ct"><i>🛡</i>আমার ছবি (সুরক্ষিত ব্যাকআপ) — <span id="libcnt">০</span> টি</div>
+    <p class="note" style="margin:4px 0 8px">প্রতিটি আপলোড করা ছবি এই ব্রাউজারে জমা থাকে। ImgBB থেকে মুছে গেলে এখান থেকে আবার আপলোড করা যাবে।</p>
+    <label class="chk" style="margin:0 0 8px"><input type="checkbox" id="autore" checked> ছবি মুছে গেছে ধরা পড়লে নিজে থেকে আবার আপলোড করো (লিংক বদলাবে)</label>
+    <div class="row" style="margin:0 0 8px"><button id="chk" class="p">সব লিংক চেক করুন</button><button id="dlall">সব ছবি ডাউনলোড</button></div>
+    <div id="libstat" class="note"></div>
+    <div id="lib"></div>
   </div>
 
   <h2 id="rh" style="display:none">ফলাফল</h2>
@@ -83,13 +115,9 @@ h2{font-size:1rem;margin:22px 0 8px}
 </main>
 
 <script>
-// অনুমোদিত সাইজ — বদলাতে চাইলে এখানে পরিবর্তন করুন
-const REQ_W=600, REQ_H=600;
-
 const $=id=>document.getElementById(id);
-const qEl=$('q'),tgt=$('tgt'),keyEl=$('key');
+const keyEl=$('key');
 const links=[];
-$('reqtxt').textContent=$('reqtxt2').textContent=REQ_W+'×'+REQ_H;
 
 // ---- API key সেভ/মোছা ----
 function keyStatus(){
@@ -113,25 +141,16 @@ keyEl.addEventListener('keydown',e=>{if(e.key==='Enter')$('save').click()});
 $('del').onclick=()=>{try{localStorage.removeItem('imgbb_key')}catch(e){}keyEl.value='';keyStatus()};
 
 // ---- কনভার্ট ----
-qEl.oninput=()=>$('qv').textContent=qEl.value;
-tgt.onchange=()=>qEl.disabled=tgt.checked;qEl.disabled=tgt.checked;
 const kb=n=>(n/1024).toFixed(0)+' KB';
-const toBlob=(c,q)=>new Promise(r=>c.toBlob(r,'image/webp',q));
 async function load(file){
   try{return await createImageBitmap(file)}catch(e){}
   return await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('ছবি পড়া যায়নি'));i.src=URL.createObjectURL(file)});
 }
-async function encode(c){
-  if(!tgt.checked)return toBlob(c,qEl.value/100);
-  const MAX=500*1024;let lo=.3,hi=.97,best=null;
-  let b=await toBlob(c,hi);if(b.size<=MAX)return b;
-  for(let i=0;i<7;i++){const m=(lo+hi)/2;b=await toBlob(c,m);if(b.size<=MAX){best=b;lo=m}else hi=m}
-  return best||await toBlob(c,.3);
-}
 const toB64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=()=>rej(new Error('ছবি পড়া যায়নি'));r.readAsDataURL(b)});
 async function upload(blob,name,key,ctl,onRetry){
   // ImgBB-তে বাংলা/বিশেষ অক্ষরের নাম সমস্যা করতে পারে, তাই নিরাপদ নাম পাঠানো হচ্ছে
-  const safe='img_'+Date.now()+'_'+Math.random().toString(36).slice(2,6)+'.webp';
+  const ext=((name||'').match(/\.([a-z0-9]+)$/i)||[])[1]||((blob.type||'').split('/')[1]||'jpg').replace('jpeg','jpg').replace('svg+xml','svg');
+  const safe='img_'+Date.now()+'_'+Math.random().toString(36).slice(2,6)+'.'+ext.toLowerCase();
   let b64=null,n=0;
   while(true){
     if(ctl.stop)throw new Error('আপনি বন্ধ করেছেন');
@@ -140,7 +159,7 @@ async function upload(blob,name,key,ctl,onRetry){
     try{
       const fd=new FormData();
       if(n%2===1){fd.append('image',blob,safe)}           // বিজোড় চেষ্টা: ফাইল হিসেবে
-      else{if(!b64)b64=await toB64(blob);fd.append('image',b64);fd.append('name',safe.replace('.webp',''))} // জোড় চেষ্টা: base64
+      else{if(!b64)b64=await toB64(blob);fd.append('image',b64);fd.append('name',safe.replace(/\.[^.]+$/,''))} // জোড় চেষ্টা: base64
       const r=await fetch('https://api.imgbb.com/1/upload?key='+encodeURIComponent(key),{method:'POST',body:fd});
       const j=await r.json().catch(()=>null);
       if(r.ok&&j&&j.success)return j.data;
@@ -169,7 +188,7 @@ async function handle(file){
   el.innerHTML='<img alt=""><div class="info"><div class="nm"></div><div class="meta"></div><div class="st">চেক হচ্ছে…</div></div>';
   $('res').prepend(el);
   const im=el.querySelector('img'),nm=el.querySelector('.nm'),meta=el.querySelector('.meta'),st=el.querySelector('.st'),info=el.querySelector('.info');
-  const out=file.name.replace(/\.[^.]+$/,'')+'.webp';nm.textContent=file.name;
+  const out=file.name;nm.textContent=file.name;
   const fail=m=>{st.textContent=m;st.className='st er'};
   try{
     if(!file.type.startsWith('image/'))return fail('এটি ছবি ফাইল নয়।');
@@ -178,21 +197,8 @@ async function handle(file){
     meta.textContent=`${w}×${h} · ${kb(file.size)}`;
     const key=keyEl.value.trim();
     if(!key)return fail('আগে ImgBB API key দিয়ে "সেভ করুন" চাপুন।');
-    st.textContent='কনভার্ট হচ্ছে…';
-    const c=document.createElement('canvas');c.width=REQ_W;c.height=REQ_H;
-    const x=c.getContext('2d');x.imageSmoothingQuality='high';
-    const mode=$('fit').value;
-    if(w===REQ_W&&h===REQ_H||mode==='stretch'){x.drawImage(img,0,0,REQ_W,REQ_H)}
-    else{
-      x.fillStyle='#fff';x.fillRect(0,0,REQ_W,REQ_H);
-      const s=mode==='cover'?Math.max(REQ_W/w,REQ_H/h):Math.min(REQ_W/w,REQ_H/h);
-      x.drawImage(img,(REQ_W-w*s)/2,(REQ_H-h*s)/2,w*s,h*s);
-    }
-    const resized=(w!==REQ_W||h!==REQ_H);
-    const blob=await encode(c);
-    if(!blob||blob.type!=='image/webp')return fail('এই ব্রাউজারে WebP তৈরি হচ্ছে না।');
-    im.src=URL.createObjectURL(blob);nm.textContent=out;
-    meta.textContent=(resized?`${w}×${h} → ${REQ_W}×${REQ_H} (রিসাইজ হয়েছে)`:`${w}×${h}`)+` · ${kb(file.size)} → ${kb(blob.size)}`;
+    const blob=file;
+    nm.textContent=out;
     st.textContent='ImgBB-তে আপলোড হচ্ছে…';
     const ctl={stop:false};
     const stopBtn=document.createElement('button');stopBtn.textContent='বন্ধ করুন';stopBtn.style.marginTop='6px';
@@ -210,11 +216,18 @@ async function handle(file){
     info.appendChild(ex);
     links.push(link);$('copyall').style.display='';
     const row=document.createElement('div');row.className='row';
-    row.innerHTML='<input type="text" readonly><button class="p">কপি</button><a class="btn" target="_blank" rel="noopener">খুলুন</a>';
+    row.innerHTML='<input type="text" readonly><button class="p">কপি</button><a class="btn" target="_blank" rel="noopener">খুলুন</a><a class="btn dl">ডাউনলোড</a>';
     const inp=row.querySelector('input');inp.value=link;row.querySelector('a').href=link;
+    const dla=row.querySelector('a.dl');dla.href=URL.createObjectURL(blob);dla.download=out;
+    try{await dbPut({id:Date.now()+'_'+Math.random().toString(36).slice(2,6),name:out,blob:blob,url:link,time:Date.now()});renderLib()}catch(_){}
     inp.onfocus=()=>inp.select();
     row.querySelector('button').onclick=e=>copy(link,e.target);
     info.appendChild(row);
+    if($('tgauto').checked&&$('tgtok').value.trim()&&$('tgchat').value.trim()){
+      const tg=document.createElement('div');tg.className='st';tg.textContent='টেলিগ্রামে পাঠানো হচ্ছে…';info.appendChild(tg);
+      try{await tgSend(blob,out,out+'\n'+link);tg.textContent='✓ টেলিগ্রামে পাঠানো হয়েছে';tg.className='st ok'}
+      catch(e2){tg.textContent='টেলিগ্রামে পাঠানো যায়নি: '+(e2.message||e2);tg.className='st er'}
+    }
   }catch(e){fail('ত্রুটি: '+(e.message||'আপলোড ব্যর্থ'))}
 }
 async function run(files){for(const f of files)await handle(f)}
@@ -258,6 +271,139 @@ $('urlgo').onclick=async()=>{
   }
   btn.disabled=false;
 };
+// ---- টেলিগ্রাম বট ----
+(function(){let t='',c='',m='';try{t=localStorage.getItem('tg_token')||'';c=localStorage.getItem('tg_chat')||'';m=localStorage.getItem('tg_mode')||''}catch(_){}
+  $('tgtok').value=t;$('tgchat').value=c;if(m)$('tgmode').value=m;
+  tgStatus();})();
+function tgStatus(){
+  const s=$('tgstat');const ok=$('tgtok').value.trim()&&$('tgchat').value.trim();
+  s.textContent=ok?'✓ বট তৈরি, পাঠানোর জন্য প্রস্তুত':'Token ও Chat ID দিন';s.style.color=ok?'var(--ok)':'var(--mu)';
+}
+$('tgsave').onclick=()=>{
+  try{localStorage.setItem('tg_token',$('tgtok').value.trim());localStorage.setItem('tg_chat',$('tgchat').value.trim());localStorage.setItem('tg_mode',$('tgmode').value)}catch(_){$('tgstat').textContent='⚠ এই ব্রাউজারে সেভ করা যাচ্ছে না।';$('tgstat').style.color='var(--er)';return}
+  tgStatus();
+};
+$('tgmode').onchange=()=>{try{localStorage.setItem('tg_mode',$('tgmode').value)}catch(_){}};
+$('tgdel').onclick=()=>{try{localStorage.removeItem('tg_token');localStorage.removeItem('tg_chat')}catch(_){}$('tgtok').value='';$('tgchat').value='';tgStatus()};
+async function tgCall(method,fd){
+  const t=$('tgtok').value.trim(),c=$('tgchat').value.trim();
+  if(!t||!c)throw new Error('আগে বট Token ও Chat ID দিন');
+  fd.append('chat_id',c);
+  const r=await fetch('https://api.telegram.org/bot'+t+'/'+method,{method:'POST',body:fd});
+  const j=await r.json().catch(()=>null);
+  if(!r.ok||!j||!j.ok)throw new Error((j&&j.description)||('HTTP '+r.status));
+  return j.result;
+}
+async function tgSend(blob,name,caption){
+  const photo=$('tgmode').value==='photo';
+  let last;
+  for(let n=0;n<3;n++){ // সাময়িক সমস্যায় ৩ বার চেষ্টা
+    try{
+      const fd=new FormData();fd.append(photo?'photo':'document',blob,name);
+      if(caption)fd.append('caption',caption);
+      return await tgCall(photo?'sendPhoto':'sendDocument',fd);
+    }catch(e){
+      last=e;
+      if(/unauthorized|chat not found|forbidden|bot was blocked|bad request/i.test(e.message||''))throw e;
+      await new Promise(r=>setTimeout(r,1500*(n+1)));
+    }
+  }
+  throw last;
+}
+$('tgtest').onclick=async()=>{
+  const s=$('tgstat');s.textContent='টেস্ট পাঠানো হচ্ছে…';s.style.color='var(--mu)';
+  try{const fd=new FormData();fd.append('text','✅ টেস্ট সফল! বট ঠিকমতো কাজ করছে।');await tgCall('sendMessage',fd);s.textContent='✓ টেস্ট মেসেজ গেছে, টেলিগ্রাম চেক করুন';s.style.color='var(--ok)'}
+  catch(e){s.textContent='ব্যর্থ: '+(e.message||e);s.style.color='var(--er)'}
+};
+
+// ---- সুরক্ষিত ব্যাকআপ (IndexedDB) ----
+let _db=null;
+function dbo(){return _db||(_db=new Promise((res,rej)=>{const r=indexedDB.open('webp_store',1);r.onupgradeneeded=()=>r.result.createObjectStore('imgs',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
+async function dbTx(mode,fn){const d=await dbo();return new Promise((res,rej)=>{const t=d.transaction('imgs',mode);const rq=fn(t.objectStore('imgs'));t.oncomplete=()=>res(rq&&rq.result);t.onerror=()=>rej(t.error)})}
+const dbPut=o=>dbTx('readwrite',s=>s.put(o));
+const dbAll=()=>dbTx('readonly',s=>s.getAll());
+const dbDel=id=>dbTx('readwrite',s=>s.delete(id));
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(_){}
+
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const probe=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+(u.includes('?')?'&':'?')+'chk='+Date.now()});
+async function alive(u){
+  if(await probe(u))return true;
+  await new Promise(r=>setTimeout(r,1500));
+  return await probe(u); // দুইবার ব্যর্থ হলে তবেই মুছে গেছে ধরা হবে
+}
+const libEls={};
+async function reupload(it,silent){
+  const key=keyEl.value.trim();const s=libEls[it.id];
+  if(!key){if(s)s.st.textContent='আগে API key দিন';return false}
+  const ctl={stop:false};
+  try{
+    if(s){s.st.textContent='আবার আপলোড হচ্ছে…';s.st.style.color='var(--mu)'}
+    const d=await upload(it.blob,it.name,key,ctl,(n,msg,t)=>{if(s)s.st.textContent='ব্যর্থ: '+msg+' — '+t+' সেকেন্ড পরে আবার…'});
+    it.url=d.url;await dbPut(it);
+    if(s){s.inp.value=it.url;s.open.href=it.url;s.st.textContent='✓ নতুন লিংক তৈরি হয়েছে (পুরনো লিংক বদলে নিন)';s.st.style.color='var(--ok)';s.re.style.display='none'}
+    return true;
+  }catch(e){if(s){s.st.textContent='আবার আপলোড ব্যর্থ: '+(e.message||e);s.st.style.color='var(--er)'}return false}
+}
+async function renderLib(){
+  let all=[];try{all=await dbAll()||[]}catch(e){}
+  all.sort((a,b)=>b.time-a.time);
+  $('libcnt').textContent=bn(all.length);
+  const box=$('lib');box.innerHTML='';
+  for(const k in libEls)delete libEls[k];
+  for(const it of all){
+    const el=document.createElement('div');el.className='item';
+    const im=document.createElement('img');im.alt='';im.src=URL.createObjectURL(it.blob);
+    const info=document.createElement('div');info.className='info';
+    const nm=document.createElement('div');nm.className='nm';nm.textContent=it.name;
+    const meta=document.createElement('div');meta.className='meta';meta.textContent=kb(it.blob.size)+' · '+new Date(it.time).toLocaleString('bn-BD');
+    const st=document.createElement('div');st.className='st';
+    const row=document.createElement('div');row.className='row';
+    const inp=document.createElement('input');inp.type='text';inp.readOnly=true;inp.value=it.url;inp.onfocus=()=>inp.select();
+    const cp=document.createElement('button');cp.className='p';cp.textContent='কপি';cp.onclick=()=>copy(inp.value,cp);
+    const open=document.createElement('a');open.className='btn';open.target='_blank';open.rel='noopener';open.textContent='খুলুন';open.href=it.url;
+    const dl=document.createElement('a');dl.className='btn';dl.textContent='ডাউনলোড';dl.href=URL.createObjectURL(it.blob);dl.download=it.name;
+    const re=document.createElement('button');re.textContent='আবার আপলোড';re.style.display='none';re.onclick=()=>reupload(it).then(()=>{});
+    const rm=document.createElement('button');rm.textContent='মুছুন';rm.onclick=async()=>{if(confirm('এই ব্যাকআপ কপি মুছবেন? ImgBB-র ছবি এতে মুছবে না।')){await dbDel(it.id);renderLib()}};
+    const tb=document.createElement('button');tb.textContent='টেলিগ্রামে পাঠান';
+    tb.onclick=async()=>{tb.disabled=true;st.textContent='টেলিগ্রামে পাঠানো হচ্ছে…';st.style.color='var(--mu)';
+      try{await tgSend(it.blob,it.name,it.name+'\n'+it.url);st.textContent='✓ টেলিগ্রামে পাঠানো হয়েছে';st.style.color='var(--ok)'}
+      catch(e){st.textContent='টেলিগ্রামে পাঠানো যায়নি: '+(e.message||e);st.style.color='var(--er)'}
+      tb.disabled=false};
+    row.append(inp,cp,open,dl,tb,re,rm);
+    info.append(nm,meta,st,row);el.append(im,info);box.append(el);
+    libEls[it.id]={st,inp,open,re};it._el=libEls[it.id];
+  }
+  return all;
+}
+let checking=false;
+async function checkAll(){
+  if(checking)return;checking=true;
+  const cb=$('chk');cb.disabled=true;
+  try{
+    if(!navigator.onLine){$('libstat').textContent='ইন্টারনেট নেই, চেক করা গেল না।';return}
+    const all=await dbAll()||[];
+    let dead=0,fixed=0,i=0;
+    for(const it of all){
+      i++;$('libstat').textContent='চেক হচ্ছে… '+bn(i)+'/'+bn(all.length);
+      const s=libEls[it.id];
+      if(!navigator.onLine)break;
+      if(await alive(it.url)){if(s){s.st.textContent='✓ ছবি ঠিক আছে';s.st.style.color='var(--ok)';s.re.style.display='none'}continue}
+      dead++;
+      if(s){s.st.textContent='⚠ ImgBB থেকে ছবি মুছে গেছে';s.st.style.color='var(--er)';s.re.style.display=''}
+      if($('autore').checked&&await reupload(it,true))fixed++;
+    }
+    $('libstat').textContent=all.length?('চেক শেষ: '+bn(all.length)+' টির মধ্যে '+bn(dead)+' টি মুছে গিয়েছিল'+(dead?(', '+bn(fixed)+' টি আবার আপলোড হয়েছে।'):'।')):'কোনো সংরক্ষিত ছবি নেই।';
+  }catch(e){$('libstat').textContent='চেক করা যায়নি: '+(e.message||e)}
+  finally{checking=false;cb.disabled=false}
+}
+$('chk').onclick=checkAll;
+$('dlall').onclick=async()=>{
+  const all=await dbAll()||[];
+  for(const it of all){const a=document.createElement('a');a.href=URL.createObjectURL(it.blob);a.download=it.name;document.body.appendChild(a);a.click();a.remove();await new Promise(r=>setTimeout(r,400))}
+};
+renderLib().then(all=>{if(all&&all.length&&keyEl.value.trim())setTimeout(checkAll,800)});
+
 $('copyall').onclick=e=>copy(links.join('\n'),e.target);
 const drop=$('drop'),fi=$('file');
 drop.onclick=()=>fi.click();
